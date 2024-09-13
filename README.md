@@ -66,8 +66,7 @@ https://github.com/user-attachments/assets/f45e9c61-162f-443b-8e23-da232e656498
 -----
 
 ### Feedback
-- Find this example fun and engaging? ❤️
-- Give a ⭐️ if this project helped you!
+- Find this example fun and engaging? ❤️ Give a ⭐️ if this project helped you!
 - Found a bug or have a suggestion? Open an issue or submit a PR—contributions are welcome! 💻✨
 
 -----

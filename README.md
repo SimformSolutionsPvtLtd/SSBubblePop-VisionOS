@@ -16,7 +16,7 @@ Features in this Demo:
 - Interactive Gameplay: Players can tap the bubbles to pop them and score points.
 - Dynamic Scoring System: Earn points for each bubble popped, with a 60-second timer to challenge your speed and precision.
 
-###Prerequisites
+### Prerequisites
 
 Xcode 15 (or above)
 VisionOS SDK
@@ -51,7 +51,7 @@ Check out the demo of the Bubble Pop game in action:
 Find this example fun and engaging? ❤️
 Give a ⭐️ if this project helped you!
 
-### Check out our other Libraries
+Check out our other Libraries
 <h3><a href="https://github.com/SimformSolutionsPvtLtd/Awesome-Mobile-Libraries"><u>🗂 Simform Solutions Libraries→</u></a></h3>
 
 Copyright

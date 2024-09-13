@@ -45,7 +45,9 @@ waiting to be popped. When the time is up, the final score is displayed.
 
 Demo:
 Check out the demo of the Bubble Pop game in action:
-![Demo]([https://github.com/SimformSolutionsPvtLtd/SSBublePop-VisionOS/blob/develop/Simulator%20Screen%20Recording%20-%20Apple%20Vision%20Pro%20-%202024-09-13%20at%2017.21.07.mp4])
+
+https://github.com/user-attachments/assets/2633b993-653a-405a-9313-305cb79b7853
+
 
 ### Feedback
 Find this example fun and engaging? ❤️

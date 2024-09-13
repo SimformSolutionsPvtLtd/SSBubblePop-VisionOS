@@ -46,8 +46,7 @@ waiting to be popped. When the time is up, the final score is displayed.
 Demo:
 Check out the demo of the Bubble Pop game in action:
 
-https://github.com/user-attachments/assets/2633b993-653a-405a-9313-305cb79b7853
-
+https://github.com/user-attachments/assets/f45e9c61-162f-443b-8e23-da232e656498
 
 ### Feedback
 Find this example fun and engaging? ❤️

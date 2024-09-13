@@ -1,0 +1,585 @@
+#usda 1.0
+(
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    reorder nameChildren = ["GridMaterial", "Sphere"]
+    rel material:binding = None (
+        bindMaterialAs = "weakerThanDescendants"
+    )
+
+    def Sphere "Bubble" (
+        active = true
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </Root/BubbleMaterial> (
+            bindMaterialAs = "weakerThanDescendants"
+        )
+        double radius = 0.1
+        float2 ui:nodegraph:node:pos = (40, 40)
+        int ui:nodegraph:node:stackingOrder = 2
+        quatf xformOp:orient = (1, 0, 0, 0)
+        float3 xformOp:scale = (1, 1, 1)
+        float3 xformOp:translate = (0, 0.7, -0.5)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "Collider"
+        {
+            uint group = 1
+            uniform token info:id = "RealityKit.Collider"
+            uint mask = 4294967295
+            token type = "Default"
+
+            def RealityKitStruct "Shape"
+            {
+                float3 extent = (0.2, 0.2, 0.2)
+                float radius = 0.1
+                token shapeType = "Sphere"
+
+                def RealityKitStruct "pose"
+                {
+                }
+            }
+        }
+
+        def RealityKitComponent "InputTarget"
+        {
+            uniform token info:id = "RealityKit.InputTarget"
+        }
+
+        def RealityKitCustomComponent "RealityKitContent_BubbleComponent"
+        {
+            uniform token info:id = "RealityKitContent.BubbleComponent"
+        }
+    }
+
+    def Material "BubbleMaterial"
+    {
+        float inputs:AnimationSpeed = 0.01 (
+            customData = {
+                dictionary realitykit = {
+                    float2 positionInSubgraph = (-995.4258, -400.20312)
+                    int stackingOrderInSubgraph = 1268
+                }
+            }
+        )
+        float inputs:NoiseScale = 30 (
+            customData = {
+                dictionary realitykit = {
+                    float2 positionInSubgraph = (-1002.1719, -301.5547)
+                    int stackingOrderInSubgraph = 1270
+                }
+            }
+        )
+        float inputs:Pop = 0 (
+            customData = {
+                dictionary realitykit = {
+                    float2 positionInSubgraph = (-753.27344, 288.5664)
+                }
+            }
+        )
+        token outputs:mtlx:surface.connect = </Root/BubbleMaterial/PreviewSurface.outputs:out>
+        token outputs:realitykit:vertex
+        float2 ui:nodegraph:node:pos = (40, 40)
+        int ui:nodegraph:node:stackingOrder = 2
+        float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (598.58203, -41.6875)
+        int ui:nodegraph:realitykit:subgraphOutputs:stackingOrder = 1325
+
+        def Shader "PreviewSurface"
+        {
+            uniform token info:id = "ND_UsdPreviewSurface_surfaceshader"
+            float inputs:clearcoat
+            float inputs:clearcoatRoughness
+            color3f inputs:diffuseColor = (0.7039548, 0.6865179, 0.71166235) (
+                colorSpace = "srgb_displayp3"
+            )
+            color3f inputs:emissiveColor.connect = </Root/BubbleMaterial/Add_4.outputs:out>
+            float inputs:ior
+            float inputs:metallic
+            float3 inputs:normal
+            float inputs:occlusion = 1
+            float inputs:occlusion.connect = </Root/BubbleMaterial/Step.outputs:out>
+            float inputs:opacity = 0.15
+            float inputs:opacity.connect = </Root/BubbleMaterial/Remap_1.outputs:out>
+            float inputs:opacityThreshold
+            float inputs:roughness = 0
+            token outputs:out
+            float2 ui:nodegraph:node:pos = (356.83203, -41.6875)
+            int ui:nodegraph:node:stackingOrder = 1325
+            string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["Advanced", "inputs:occlusion"]
+        }
+
+        def Shader "Add"
+        {
+            uniform token info:id = "ND_add_color3"
+            color3f inputs:in1.connect = </Root/BubbleMaterial/GenerateColorNoise.outputs:Multiply_out>
+            color3f inputs:in2.connect = </Root/BubbleMaterial/GenerateColorNoise_1.outputs:Multiply_out>
+            color3f outputs:out
+            float2 ui:nodegraph:node:pos = (-3.8554688, -442.44922)
+            int ui:nodegraph:node:stackingOrder = 1266
+        }
+
+        def Shader "Add_4"
+        {
+            uniform token info:id = "ND_add_color3"
+            color3f inputs:in1.connect = </Root/BubbleMaterial/Add.outputs:out>
+            color3f inputs:in2.connect = </Root/BubbleMaterial/GenerateColorNoise_2.outputs:Multiply_out>
+            color3f outputs:out
+            float2 ui:nodegraph:node:pos = (135.7539, -388.51172)
+            int ui:nodegraph:node:stackingOrder = 1264
+        }
+
+        def NodeGraph "GenerateColorNoise"
+        {
+            float inputs:AnimationSpeed (
+                customData = {
+                    dictionary realitykit = {
+                        float2 positionInSubgraph = (79.25, 142.5)
+                        int stackingOrderInSubgraph = 1065
+                    }
+                }
+            )
+            float inputs:AnimationSpeed.connect = </Root/BubbleMaterial.inputs:AnimationSpeed>
+            color3f inputs:NoiseColor = (1, 0.058324646, 0.62459046) (
+                colorSpace = "srgb_displayp3"
+                customData = {
+                    dictionary realitykit = {
+                        float2 positionInSubgraph = (1044.1367, 6.6132812)
+                        int stackingOrderInSubgraph = 1065
+                    }
+                }
+            )
+            float3 inputs:NoiseOffset (
+                customData = {
+                    dictionary realitykit = {
+                        float2 positionInSubgraph = (359.89062, -36.171875)
+                        int stackingOrderInSubgraph = 1065
+                    }
+                }
+            )
+            float inputs:NoiseScale (
+                customData = {
+                    dictionary realitykit = {
+                        float2 positionInSubgraph = (497.5, 271)
+                        int stackingOrderInSubgraph = 966
+                    }
+                }
+            )
+            float inputs:NoiseScale.connect = </Root/BubbleMaterial.inputs:NoiseScale>
+            color3f outputs:Multiply_out.connect = </Root/BubbleMaterial/GenerateColorNoise/Multiply.outputs:out>
+            float2 ui:nodegraph:node:pos = (-398.02917, -558.0436)
+            int ui:nodegraph:node:stackingOrder = 1242
+            float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (1327.75, 195.75)
+
+            def Shader "Multiply_1"
+            {
+                uniform token info:id = "ND_multiply_vector3FA"
+                float3 inputs:in1.connect = </Root/BubbleMaterial/GenerateColorNoise/Add_1.outputs:out>
+                float inputs:in2.connect = </Root/BubbleMaterial/GenerateColorNoise.inputs:NoiseScale>
+                float3 outputs:out
+                float2 ui:nodegraph:node:pos = (781, 154.5)
+                int ui:nodegraph:node:stackingOrder = 1065
+            }
+
+            def Shader "Add_1"
+            {
+                uniform token info:id = "ND_add_vector3"
+                float3 inputs:in1.connect = </Root/BubbleMaterial/GenerateColorNoise/Position.outputs:out>
+                float3 inputs:in2.connect = </Root/BubbleMaterial/GenerateColorNoise/Add_5.outputs:out>
+                float3 outputs:out
+                float2 ui:nodegraph:node:pos = (664.25, 93.5)
+                int ui:nodegraph:node:stackingOrder = 1065
+            }
+
+            def Shader "Add_5"
+            {
+                uniform token info:id = "ND_add_vector3FA"
+                float3 inputs:in1.connect = </Root/BubbleMaterial/GenerateColorNoise.inputs:NoiseOffset>
+                float inputs:in2.connect = </Root/BubbleMaterial/GenerateColorNoise/Multiply_6.outputs:out>
+                float3 outputs:out
+                float2 ui:nodegraph:node:pos = (497.5, 63.5)
+                int ui:nodegraph:node:stackingOrder = 1065
+            }
+
+            def Shader "Time"
+            {
+                uniform token info:id = "ND_time_float"
+                float outputs:out
+                float2 ui:nodegraph:node:pos = (79.25, 27.5)
+                int ui:nodegraph:node:stackingOrder = 1065
+            }
+
+            def Shader "Multiply"
+            {
+                uniform token info:id = "ND_multiply_color3FA"
+                color3f inputs:in1.connect = </Root/BubbleMaterial/GenerateColorNoise.inputs:NoiseColor>
+                float inputs:in2.connect = </Root/BubbleMaterial/GenerateColorNoise/Noise3D.outputs:out>
+                color3f outputs:out
+                float2 ui:nodegraph:node:pos = (1148, 195.75)
+                int ui:nodegraph:node:stackingOrder = 1065
+            }
+
+            def Shader "Noise3D"
+            {
+                uniform token info:id = "ND_noise3d_float"
+                float inputs:amplitude
+                float inputs:pivot
+                float3 inputs:position.connect = </Root/BubbleMaterial/GenerateColorNoise/Multiply_1.outputs:out>
+                float outputs:out
+                float2 ui:nodegraph:node:pos = (964.5, 154.5)
+                int ui:nodegraph:node:stackingOrder = 1065
+            }
+
+            def Shader "Position"
+            {
+                uniform token info:id = "ND_position_vector3"
+                string inputs:space = "world"
+                float3 outputs:out
+                float2 ui:nodegraph:node:pos = (574.1875, -13.2421875)
+                int ui:nodegraph:node:stackingOrder = 1065
+                string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["outputs:out"]
+            }
+
+            def Shader "Multiply_6"
+            {
+                uniform token info:id = "ND_multiply_float"
+                float inputs:in1.connect = </Root/BubbleMaterial/GenerateColorNoise/Time.outputs:out>
+                float inputs:in2.connect = </Root/BubbleMaterial/GenerateColorNoise.inputs:AnimationSpeed>
+                float outputs:out
+                float2 ui:nodegraph:node:pos = (289, 45.5)
+                int ui:nodegraph:node:stackingOrder = 1065
+            }
+        }
+
+        def NodeGraph "GenerateColorNoise_1"
+        {
+            float inputs:AnimationSpeed (
+                customData = {
+                    dictionary realitykit = {
+                        float2 positionInSubgraph = (79.25, 142.5)
+                        int stackingOrderInSubgraph = 1065
+                    }
+                }
+            )
+            float inputs:AnimationSpeed.connect = </Root/BubbleMaterial.inputs:AnimationSpeed>
+            color3f inputs:NoiseColor = (0.6330367, 0.9178862, 0.03731068) (
+                colorSpace = "srgb_displayp3"
+                customData = {
+                    dictionary realitykit = {
+                        float2 positionInSubgraph = (1044.1367, 6.6132812)
+                        int stackingOrderInSubgraph = 1065
+                    }
+                }
+            )
+            float3 inputs:NoiseOffset = (1, 1, 1) (
+                customData = {
+                    dictionary realitykit = {
+                        float2 positionInSubgraph = (359.89062, -36.171875)
+                        int stackingOrderInSubgraph = 1065
+                    }
+                }
+            )
+            float inputs:NoiseScale (
+                customData = {
+                    dictionary realitykit = {
+                        float2 positionInSubgraph = (497.5, 271)
+                        int stackingOrderInSubgraph = 966
+                    }
+                }
+            )
+            float inputs:NoiseScale.connect = </Root/BubbleMaterial.inputs:NoiseScale>
+            color3f outputs:Multiply_out.connect = </Root/BubbleMaterial/GenerateColorNoise_1/Multiply.outputs:out>
+            float2 ui:nodegraph:node:pos = (-394.81042, -331.66077)
+            int ui:nodegraph:node:stackingOrder = 1251
+            float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (1327.75, 195.75)
+
+            def Shader "Multiply_1"
+            {
+                uniform token info:id = "ND_multiply_vector3FA"
+                float3 inputs:in1.connect = </Root/BubbleMaterial/GenerateColorNoise_1/Add_1.outputs:out>
+                float inputs:in2.connect = </Root/BubbleMaterial/GenerateColorNoise_1.inputs:NoiseScale>
+                float3 outputs:out
+                float2 ui:nodegraph:node:pos = (781, 154.5)
+                int ui:nodegraph:node:stackingOrder = 1065
+            }
+
+            def Shader "Add_1"
+            {
+                uniform token info:id = "ND_add_vector3"
+                float3 inputs:in1.connect = </Root/BubbleMaterial/GenerateColorNoise_1/Position.outputs:out>
+                float3 inputs:in2.connect = </Root/BubbleMaterial/GenerateColorNoise_1/Add_5.outputs:out>
+                float3 outputs:out
+                float2 ui:nodegraph:node:pos = (664.25, 93.5)
+                int ui:nodegraph:node:stackingOrder = 1065
+            }
+
+            def Shader "Add_5"
+            {
+                uniform token info:id = "ND_add_vector3FA"
+                float3 inputs:in1.connect = </Root/BubbleMaterial/GenerateColorNoise_1.inputs:NoiseOffset>
+                float inputs:in2.connect = </Root/BubbleMaterial/GenerateColorNoise_1/Multiply_6.outputs:out>
+                float3 outputs:out
+                float2 ui:nodegraph:node:pos = (497.5, 63.5)
+                int ui:nodegraph:node:stackingOrder = 1065
+            }
+
+            def Shader "Time"
+            {
+                uniform token info:id = "ND_time_float"
+                float outputs:out
+                float2 ui:nodegraph:node:pos = (79.25, 27.5)
+                int ui:nodegraph:node:stackingOrder = 1065
+            }
+
+            def Shader "Multiply"
+            {
+                uniform token info:id = "ND_multiply_color3FA"
+                color3f inputs:in1.connect = </Root/BubbleMaterial/GenerateColorNoise_1.inputs:NoiseColor>
+                float inputs:in2.connect = </Root/BubbleMaterial/GenerateColorNoise_1/Noise3D.outputs:out>
+                color3f outputs:out
+                float2 ui:nodegraph:node:pos = (1148, 195.75)
+                int ui:nodegraph:node:stackingOrder = 1065
+            }
+
+            def Shader "Noise3D"
+            {
+                uniform token info:id = "ND_noise3d_float"
+                float inputs:amplitude
+                float inputs:pivot
+                float3 inputs:position.connect = </Root/BubbleMaterial/GenerateColorNoise_1/Multiply_1.outputs:out>
+                float outputs:out
+                float2 ui:nodegraph:node:pos = (964.5, 154.5)
+                int ui:nodegraph:node:stackingOrder = 1065
+            }
+
+            def Shader "Position"
+            {
+                uniform token info:id = "ND_position_vector3"
+                string inputs:space = "world"
+                float3 outputs:out
+                float2 ui:nodegraph:node:pos = (574.1875, -13.2421875)
+                int ui:nodegraph:node:stackingOrder = 1065
+                string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["outputs:out"]
+            }
+
+            def Shader "Multiply_6"
+            {
+                uniform token info:id = "ND_multiply_float"
+                float inputs:in1.connect = </Root/BubbleMaterial/GenerateColorNoise_1/Time.outputs:out>
+                float inputs:in2.connect = </Root/BubbleMaterial/GenerateColorNoise_1.inputs:AnimationSpeed>
+                float outputs:out
+                float2 ui:nodegraph:node:pos = (289, 45.5)
+                int ui:nodegraph:node:stackingOrder = 1065
+            }
+        }
+
+        def NodeGraph "GenerateColorNoise_2"
+        {
+            float inputs:AnimationSpeed (
+                customData = {
+                    dictionary realitykit = {
+                        float2 positionInSubgraph = (79.25, 142.5)
+                        int stackingOrderInSubgraph = 1065
+                    }
+                }
+            )
+            float inputs:AnimationSpeed.connect = </Root/BubbleMaterial.inputs:AnimationSpeed>
+            color3f inputs:NoiseColor = (0.3082185, 0.8960965, 1) (
+                colorSpace = "srgb_displayp3"
+                customData = {
+                    dictionary realitykit = {
+                        float2 positionInSubgraph = (1044.1367, 6.6132812)
+                        int stackingOrderInSubgraph = 1065
+                    }
+                }
+            )
+            float3 inputs:NoiseOffset = (2, 2, 2) (
+                customData = {
+                    dictionary realitykit = {
+                        float2 positionInSubgraph = (359.89062, -36.171875)
+                        int stackingOrderInSubgraph = 1065
+                    }
+                }
+            )
+            float inputs:NoiseScale (
+                customData = {
+                    dictionary realitykit = {
+                        float2 positionInSubgraph = (497.5, 271)
+                        int stackingOrderInSubgraph = 966
+                    }
+                }
+            )
+            float inputs:NoiseScale.connect = </Root/BubbleMaterial.inputs:NoiseScale>
+            color3f outputs:Multiply_out.connect = </Root/BubbleMaterial/GenerateColorNoise_2/Multiply.outputs:out>
+            float2 ui:nodegraph:node:pos = (-393.87292, -129.77795)
+            int ui:nodegraph:node:stackingOrder = 1267
+            float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (1327.75, 195.75)
+
+            def Shader "Multiply_1"
+            {
+                uniform token info:id = "ND_multiply_vector3FA"
+                float3 inputs:in1.connect = </Root/BubbleMaterial/GenerateColorNoise_2/Add_1.outputs:out>
+                float inputs:in2.connect = </Root/BubbleMaterial/GenerateColorNoise_2.inputs:NoiseScale>
+                float3 outputs:out
+                float2 ui:nodegraph:node:pos = (781, 154.5)
+                int ui:nodegraph:node:stackingOrder = 1065
+            }
+
+            def Shader "Add_1"
+            {
+                uniform token info:id = "ND_add_vector3"
+                float3 inputs:in1.connect = </Root/BubbleMaterial/GenerateColorNoise_2/Position.outputs:out>
+                float3 inputs:in2.connect = </Root/BubbleMaterial/GenerateColorNoise_2/Add_5.outputs:out>
+                float3 outputs:out
+                float2 ui:nodegraph:node:pos = (664.25, 93.5)
+                int ui:nodegraph:node:stackingOrder = 1065
+            }
+
+            def Shader "Add_5"
+            {
+                uniform token info:id = "ND_add_vector3FA"
+                float3 inputs:in1.connect = </Root/BubbleMaterial/GenerateColorNoise_2.inputs:NoiseOffset>
+                float inputs:in2.connect = </Root/BubbleMaterial/GenerateColorNoise_2/Multiply_6.outputs:out>
+                float3 outputs:out
+                float2 ui:nodegraph:node:pos = (497.5, 63.5)
+                int ui:nodegraph:node:stackingOrder = 1065
+            }
+
+            def Shader "Time"
+            {
+                uniform token info:id = "ND_time_float"
+                float outputs:out
+                float2 ui:nodegraph:node:pos = (79.25, 27.5)
+                int ui:nodegraph:node:stackingOrder = 1065
+            }
+
+            def Shader "Multiply"
+            {
+                uniform token info:id = "ND_multiply_color3FA"
+                color3f inputs:in1.connect = </Root/BubbleMaterial/GenerateColorNoise_2.inputs:NoiseColor>
+                float inputs:in2.connect = </Root/BubbleMaterial/GenerateColorNoise_2/Noise3D.outputs:out>
+                color3f outputs:out
+                float2 ui:nodegraph:node:pos = (1148, 195.75)
+                int ui:nodegraph:node:stackingOrder = 1065
+            }
+
+            def Shader "Noise3D"
+            {
+                uniform token info:id = "ND_noise3d_float"
+                float inputs:amplitude
+                float inputs:pivot
+                float3 inputs:position.connect = </Root/BubbleMaterial/GenerateColorNoise_2/Multiply_1.outputs:out>
+                float outputs:out
+                float2 ui:nodegraph:node:pos = (964.5, 154.5)
+                int ui:nodegraph:node:stackingOrder = 1065
+            }
+
+            def Shader "Position"
+            {
+                uniform token info:id = "ND_position_vector3"
+                string inputs:space = "world"
+                float3 outputs:out
+                float2 ui:nodegraph:node:pos = (574.1875, -13.2421875)
+                int ui:nodegraph:node:stackingOrder = 1065
+                string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["outputs:out"]
+            }
+
+            def Shader "Multiply_6"
+            {
+                uniform token info:id = "ND_multiply_float"
+                float inputs:in1.connect = </Root/BubbleMaterial/GenerateColorNoise_2/Time.outputs:out>
+                float inputs:in2.connect = </Root/BubbleMaterial/GenerateColorNoise_2.inputs:AnimationSpeed>
+                float outputs:out
+                float2 ui:nodegraph:node:pos = (289, 45.5)
+                int ui:nodegraph:node:stackingOrder = 1065
+            }
+        }
+
+        def Shader "Noise3D"
+        {
+            uniform token info:id = "ND_noise3d_float"
+            float inputs:amplitude
+            float inputs:pivot
+            float3 inputs:position.connect = </Root/BubbleMaterial/Multiply.outputs:out>
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (-384.6211, 88.86328)
+            int ui:nodegraph:node:stackingOrder = 1448
+        }
+
+        def Shader "Position"
+        {
+            uniform token info:id = "ND_position_vector3"
+            string inputs:space = "world"
+            float3 outputs:out
+            float2 ui:nodegraph:node:pos = (-804.7146, -10.58486)
+            int ui:nodegraph:node:stackingOrder = 1524
+        }
+
+        def Shader "PopHolesScale"
+        {
+            uniform token info:id = "ND_constant_float"
+            float inputs:value = 50
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (-813.7423, 88.23689)
+            int ui:nodegraph:node:stackingOrder = 1526
+        }
+
+        def Shader "Multiply"
+        {
+            uniform token info:id = "ND_multiply_vector3FA"
+            float3 inputs:in1.connect = </Root/BubbleMaterial/Position.outputs:out>
+            float inputs:in2.connect = </Root/BubbleMaterial/PopHolesScale.outputs:out>
+            float3 outputs:out
+            float2 ui:nodegraph:node:pos = (-662.1367, 37.789062)
+            int ui:nodegraph:node:stackingOrder = 1448
+        }
+
+        def Shader "Step"
+        {
+            uniform token info:id = "ND_realitykit_step_float"
+            float inputs:edge.connect = None
+            float inputs:in.connect = </Root/BubbleMaterial/Add_1.outputs:out>
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (-101.5, 164.90625)
+            int ui:nodegraph:node:stackingOrder = 1508
+        }
+
+        def Shader "Add_1"
+        {
+            uniform token info:id = "ND_add_float"
+            float inputs:in1.connect = </Root/BubbleMaterial/Remap.outputs:out>
+            float inputs:in2.connect = </Root/BubbleMaterial/Noise3D.outputs:out>
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (-222.83984, 234.10938)
+            int ui:nodegraph:node:stackingOrder = 1505
+        }
+
+        def Shader "Remap"
+        {
+            uniform token info:id = "ND_remap_float"
+            float inputs:in.connect = </Root/BubbleMaterial.inputs:Pop>
+            float inputs:outhigh = -1
+            float inputs:outlow = 1
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (-504.16406, 319.4922)
+            int ui:nodegraph:node:stackingOrder = 1499
+        }
+
+        def Shader "Remap_1"
+        {
+            uniform token info:id = "ND_remap_float"
+            float inputs:in.connect = </Root/BubbleMaterial/Step.outputs:out>
+            float inputs:outhigh = 0.15
+            float inputs:outlow
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (104.5, -66.58594)
+            int ui:nodegraph:node:stackingOrder = 1510
+        }
+    }
+}
+
